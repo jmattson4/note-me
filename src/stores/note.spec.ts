@@ -16,6 +16,7 @@ describe('Counter Store', () => {
     const note: Note = {name: "test1", created: "2021-02-11", updated: "2021-02-11", message: "Test123", groupName: "", linkedNotes: []}
     noteStore.createNote(note)
     expect(noteStore.notes[note.name]).eql(note)
+    expect(noteStore.groups[0]).toBe("")
   })
 
   it('Test getNote', () => {
