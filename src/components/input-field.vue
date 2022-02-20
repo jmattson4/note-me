@@ -27,8 +27,7 @@
 
 <script setup lang="ts">
 import type { PropType } from 'vue';
-
-type InputType = "textbox" | "input"
+type InputType = "textbox" | "input" 
 defineProps({
     label: String,
     placeholder: String,
@@ -36,7 +35,8 @@ defineProps({
     valid: Boolean,
     invalidMessage: String,
     validMessage: String,
-    type: String as PropType<InputType>
+    type: String as PropType<InputType>,
+    dropDownContent: Array as PropType<String[]>
 })
 
 defineEmits(["update:modelValue"])

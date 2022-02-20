@@ -16,13 +16,15 @@
                 :valid="!nameError"
                 :invalid-message="nameError"
             />
-            <InputField
-                type="input"
+            <!-- <InputField
+                type="dropdown"
                 label="Group Name"
                 placeholder="Group Name"
                 v-model="groupName"
                 :valid="true"
-            />
+                :drop-down-content
+            /> -->
+            <DropDown label="Group Name" v-model="groupName" :drop-down-content="noteStore.groups" />
             <InputField
                 type="textbox"
                 label="Message"
@@ -40,6 +42,7 @@
 import Button from '@/components/button.vue';
 import Modal from '../components/modal.vue';
 import InputField from './input-field.vue';
+import DropDown from './dropdown-search.vue';
 import { useForm, useField } from 'vee-validate';
 import { noteSchema, type Note } from '@/models/Note'
 import { ref } from 'vue';
