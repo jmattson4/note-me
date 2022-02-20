@@ -47,6 +47,7 @@ import { useForm, useField } from 'vee-validate';
 import { noteSchema, type Note } from '@/models/Note'
 import { ref } from 'vue';
 import { useNoteStore } from '@/stores/note';
+import { randomUUID } from 'crypto';
 
 const noteStore = useNoteStore()
 

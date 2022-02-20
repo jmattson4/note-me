@@ -5,7 +5,7 @@ export interface Note {
     created: string,
     updated: string
     groupName: string,
-    linkedNotes: Note[]
+    linkedNotes: string[]
 }
 
 export interface NoteMap {
