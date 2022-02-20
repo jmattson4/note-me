@@ -1,15 +1,23 @@
 <template>
-    <div class="display tile box has-background-white-ter" draggable="true" @dragstart="dragStart($event, note!)">
-        <header class="display-header">
+    <div
+        class="display tile box has-background-white-ter"
+        draggable="true"
+        @dragstart="dragStart($event, note!)"
+    >
+        <header class="display-header level">
             <p class="display-title">{{ title }}</p>
-            <div class="display-buttons">
+            <div class="level">
+                <span v-if="isEditable" @click="onEditSaveClick()" class="is-clickable">
+                    <i class="fa-solid fa-pen-to-square has-color-blue"></i>
+                </span>
+                <span v-else @click="onEditSaveClick()" class="is-clickable">
+                    <i class="fa-solid fa-save"></i>
+                </span>
                 <button
-                    class="has-background-info"
-                    style="margin-right: 0.5vw; "
-                    :aria-label="isEditable ? 'edit' : 'save'"
-                    @click="onEditSaveClick()"
-                >{{ isEditable ? 'Edit' : 'Save' }}</button>
-                <button class="delete has-background-danger" aria-label="close" @click="onEditSaveClose()"></button>
+                    class="delete has-background-danger ml-2"
+                    aria-label="close"
+                    @click="onEditSaveClose()"
+                ></button>
             </div>
         </header>
         <section class="display-body">
@@ -83,15 +91,7 @@ const onEditSaveClose = () => {
     margin: 2vh 2vw;
     .display-header {
         display: flex;
-        justify-content: space-around;
-    }
-    .display-footer {
-        display: flex;
-        justify-content: space-around;
-    }
-    .display-buttons {
-        display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
     }
 }
 </style>

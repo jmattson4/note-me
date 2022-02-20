@@ -1,7 +1,5 @@
 import type { Note, NoteMap } from '@/models/Note'
 import { defineStore } from 'pinia'
-import { object } from 'yup/lib/locale'
-
 
 interface NoteStore {
   notes: NoteMap
@@ -35,8 +33,16 @@ export const useNoteStore = defineStore({
     searchResults(state): Note[] {
       if (state.searchValue) {
         let results: Note[] = []
+        let search = state.searchValue
+        switch (search) {
+          case "all":
+            search = ""
+            break
+          default:
+            break
+        }
         Object.keys(state.notes).forEach(key =>{
-          if (key.includes(state.searchValue) || state.notes[key]?.groupName.includes(state.searchValue)) {
+          if (key.includes(search) || state.notes[key]?.groupName.includes(search)) {
             results.push(state.notes[key])
           }
         } )
@@ -71,9 +77,9 @@ export const useNoteStore = defineStore({
         this.groups.push(groupName)
       }
     },
-    splitResults(notes: Note[]) {
+    splitResults(notes: Note[], splitSize: number = 3) {
       let chunks = [], i = 0, n = notes.length
-      let len = notes.length / 3
+      let len = notes.length / splitSize
       while (i < n) {
           chunks.push(notes.slice(i, i += len))
       }
