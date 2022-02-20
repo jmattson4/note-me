@@ -1,15 +1,15 @@
 <template>
-    <div class="display" draggable="true" @dragstart="dragStart($event, note!)">
+    <div class="display tile box has-background-white-ter" draggable="true" @dragstart="dragStart($event, note!)">
         <header class="display-header">
             <p class="display-title">{{ title }}</p>
-            <div>
+            <div class="display-buttons">
                 <button
-                    class="is-info"
-                    style="margin-right: 2vw;"
+                    class="has-background-info"
+                    style="margin-right: 0.5vw; "
                     :aria-label="isEditable ? 'edit' : 'save'"
                     @click="onEditSaveClick()"
                 >{{ isEditable ? 'Edit' : 'Save' }}</button>
-                <button class="delete" aria-label="close" @click="onEditSaveClose()"></button>
+                <button class="delete has-background-danger" aria-label="close" @click="onEditSaveClose()"></button>
             </div>
         </header>
         <section class="display-body">
@@ -81,12 +81,15 @@ const onEditSaveClose = () => {
     row-gap: 10px;
     column-gap: 10px;
     margin: 2vh 2vw;
-    background-color: white;
     .display-header {
         display: flex;
         justify-content: space-around;
     }
     .display-footer {
+        display: flex;
+        justify-content: space-around;
+    }
+    .display-buttons {
         display: flex;
         justify-content: space-around;
     }

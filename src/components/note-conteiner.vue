@@ -2,7 +2,7 @@
     <div class="columns">
         <div
             :id="`display-column-${index}`"
-            v-for="val, index in localArray"
+            v-for="val, index in store.displayed"
             class="column is-one-third"
             :key="index"
             style="min-height: 50px;"
@@ -22,37 +22,25 @@
 </template>
 
 <script setup lang="ts">
-import type { Note } from '@/models/Note';
 import { useNoteStore } from '@/stores/note';
 import NoteDisplay from './note-display.vue';
-import { ref, watch } from 'vue';
+import { watch } from 'vue';
 
 const store = useNoteStore()
 
 const onDrop = (event: DragEvent, listIndex: number,) => {
     const name = event.dataTransfer?.getData('name')
-    const prevListIndex = parseInt(event.dataTransfer!.getData('listIndex'))
-    const item = localArray.value[prevListIndex].find(item => item.name == name)
-    if (!item) {
+    if (!name){
         return
     }
-    localArray.value[prevListIndex] = localArray.value[prevListIndex].filter(x => x.name !== name)
-    localArray.value[listIndex].push(item)
+    const prevListIndex = parseInt(event.dataTransfer!.getData('listIndex'))
+    store.moveDisplayed(prevListIndex, listIndex, name!)
 }
-
-const splitResults = (notes: Note[]) => {
-    let chunks = [], i = 0, n = notes.length
-    let len = notes.length / 3
-    while (i < n) {
-        chunks.push(notes.slice(i, i += len))
-    }
-    return chunks
-}
-const localArray = ref<Note[][]>(splitResults(store.searchResults))
 
 watch(() => store.searchResults, (newVal) => {
-    localArray.value = splitResults(newVal)
-})
+    console.log('fired')
+    store.splitResults(newVal)
+}, {deep: true})
 
 </script>
 
