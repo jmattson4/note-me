@@ -8,6 +8,11 @@ interface NoteStore {
   displayed: Note[][]
 }
 
+const getDateTime = (): string => {
+  const date = new Date()
+  return date.toLocaleDateString() + " " + date.toLocaleTimeString()
+}
+
 export const useNoteStore = defineStore({
   id: 'notes',
   state: () => ({
@@ -53,19 +58,19 @@ export const useNoteStore = defineStore({
   actions: {
     updateSearchValue(search: string) {
       if (search) {
-        console.log('Searched updated')
         this.searchValue = search
       }
     },
     createNote(note: Note) {
+      note.created = getDateTime()
+      note.updated = getDateTime()
       this.addGroup(note.groupName)
       this.notes[note.name] = note
     },
     updateNote(note: Note) {
       const n = this.getNote(note.name)
       if (n) {
-        const date = new Date()
-        n.updated = date.toLocaleDateString() + " " + date.toLocaleTimeString()
+        n.updated = getDateTime()
         this.createNote(note)
       }
     },
@@ -90,7 +95,6 @@ export const useNoteStore = defineStore({
       if (!item) {
           return
       }
-      console.log(index)
       this.displayed[prevListIndex] = this.displayed[prevListIndex].filter(x => x.name !== name)
       this.displayed[newListIndex].splice(index, 0, item)
     }

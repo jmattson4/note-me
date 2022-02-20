@@ -71,8 +71,8 @@ const submit = handleSubmit((n) => {
         name: n.name ?? '',
         message: n.message ?? '',
         groupName: n.groupName ?? '',
-        created: new Date().toLocaleDateString(),
-        updated: new Date().toLocaleDateString(),
+        created: '',
+        updated: '',
         linkedNotes: []
     }
     noteStore.createNote(note)
