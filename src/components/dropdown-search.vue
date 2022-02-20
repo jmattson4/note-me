@@ -15,7 +15,7 @@
                         @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
                     />
                 </div>
-                <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+                <div class="dropdown-menu" id="dropdown-menu3" role="menu" style="width: 100%;">
                     <div class="dropdown-content">
                         <a
                             v-for="content in dropDownContent"
