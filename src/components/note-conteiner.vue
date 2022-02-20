@@ -29,8 +29,6 @@ import { watch } from 'vue';
 const store = useNoteStore()
 
 const onDrop = (event: DragEvent, listIndex: number,) => {
-    console.log((event.target as HTMLElement).tagName)
-
     const name = event.dataTransfer?.getData('name')
     if (!name) {
         return
