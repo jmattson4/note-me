@@ -17,6 +17,7 @@
     "vee-validate": "^4.5.8",
     "vue": "^3.2.29",
     "vue-router": "^4.0.12",
+    "vuedraggable": "^4.1.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {

@@ -1,6 +1,8 @@
 <script setup lang="ts">
+
 import CreateNote from '../components/create-note.vue';
 import Search from '../components/search.vue';
+import NoteConteiner from '../components/note-conteiner.vue';
 </script>
 
 <template>
@@ -9,6 +11,9 @@ import Search from '../components/search.vue';
       <div class="level" style="width: 100%;">
         <CreateNote />
         <Search />
+      </div>
+      <div>
+        <NoteConteiner/>
       </div>
     </div>
   </main>

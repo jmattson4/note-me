@@ -48,6 +48,15 @@ export const useNoteStore = defineStore({
       this.addGroup(note.groupName)
       this.notes[note.name] = note
     },
+    updateNote(note: Note) {
+      const n = this.getNote(note.name)
+      if (n) {
+        this.createNote(note)
+      }
+    },
+    deleteNote(noteName: string) {
+      delete this.notes[noteName]
+    },
     addGroup(groupName: string) {
       if (!this.groups.includes(groupName)) {
         this.groups.push(groupName)

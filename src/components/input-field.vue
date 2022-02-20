@@ -6,6 +6,7 @@
                 class="input"
                 :class="valid ? 'is-success' : 'is-danger'"
                 type="text"
+                :disabled="disabled"
                 :placeholder="placeholder"
                 :value="modelValue"
                 @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
@@ -15,6 +16,7 @@
                 class="textarea"
                 :class="valid ? 'is-success' : 'is-danger'"
                 :placeholder="placeholder"
+                :disabled="disabled"
                 :value="modelValue"
                 @input="$emit('update:modelValue', ($event.target as HTMLTextAreaElement).value)"
             ></textarea>
@@ -33,6 +35,7 @@ defineProps({
     placeholder: String,
     modelValue: String,
     valid: Boolean,
+    disabled: Boolean,
     invalidMessage: String,
     validMessage: String,
     type: String as PropType<InputType>,
