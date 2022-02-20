@@ -21,6 +21,15 @@ export const useNoteStore = defineStore({
         return state.notes[name]
       }
     },
+    searchSuggestions(state): string[] {
+      let results: string[] = []
+      Object.keys(state.notes).forEach(key =>{
+        if (key.includes(state.searchValue) || state.notes[key]?.groupName == state.searchValue) {
+          results.push(state.notes[key].name)
+        }
+      } )
+      return results
+    },
     searchResults(state): Note[] {
       let results: Note[] = []
       Object.keys(state.notes).forEach(key =>{
@@ -28,7 +37,6 @@ export const useNoteStore = defineStore({
           results.push(state.notes[key])
         }
       } )
-      console.log(results)
       return results
     }
   },
