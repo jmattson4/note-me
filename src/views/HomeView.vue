@@ -12,9 +12,7 @@ import NoteConteiner from '../components/note-conteiner.vue';
         <CreateNote />
         <Search />
       </div>
-      <div>
-        <NoteConteiner/>
-      </div>
+      <NoteConteiner/>
     </div>
   </main>
 </template>
