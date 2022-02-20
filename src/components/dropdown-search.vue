@@ -10,6 +10,7 @@
                         class="input"
                         type="text"
                         :value="modelValue"
+                        :placeholder="placeHolder"
                         @blur="timeTrigger(false)"
                         @click="isActive = true"
                         @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
@@ -35,7 +36,8 @@ import { ref, type PropType } from 'vue';
 defineProps({
     label: String,
     modelValue: String,
-    dropDownContent: Array as PropType<String[]>
+    dropDownContent: Array as PropType<String[]>,
+    placeHolder: String
 })
 const emit = defineEmits(["update:modelValue"])
 const isActive = ref(false)
@@ -43,7 +45,7 @@ const timeTrigger = (active: boolean) => {
     setTimeout(() => isActive.value = active, 100)
 }
 const onClick = (event: Event) => {
-    const text = (event.target as HTMLAnchorElement).innerText
+    const text = (event.target as HTMLAnchorElement).text
     emit('update:modelValue', text)
 }
 </script>
