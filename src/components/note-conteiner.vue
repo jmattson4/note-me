@@ -35,10 +35,10 @@ const onDrop = (event: DragEvent, listIndex: number,) => {
     }
     const index = traverseTree((event.target as HTMLElement))
     const prevListIndex = parseInt(event.dataTransfer!.getData('listIndex'))
-    store.moveDisplayed(index ?? 0, prevListIndex, listIndex, name!)
+    store.moveDisplayed(index, prevListIndex, listIndex, name!)
 }
 
-const traverseTree = (element: HTMLElement, shift = 0): number | null => {
+const traverseTree = (element: HTMLElement, shift = 0): number => {
     if (element) {
         switch (element.tagName) {
             case 'DIV':
