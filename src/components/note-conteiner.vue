@@ -27,7 +27,7 @@ import NoteDisplay from './note-display.vue';
 import { watch } from 'vue';
 
 const store = useNoteStore()
-
+store.columnSize = 4
 const onDrop = (event: DragEvent, listIndex: number,) => {
     const name = event.dataTransfer?.getData('name')
     if (!name) {
@@ -67,7 +67,7 @@ const traverseTree = (element: HTMLElement, shift = 0): number => {
 
 watch(() => store.searchResults, (newVal) => {
     if (newVal && newVal.length > 0) {
-        store.splitResults(newVal, 4)
+        store.splitResults(newVal)
     }
 }, { deep: true })
 

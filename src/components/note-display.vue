@@ -29,9 +29,16 @@
                 :disabled="isEditable"
             />
         </section>
-        <footer class="display-footer columns">
-            <p class="column">Created {{ note?.created }}</p>
-            <p class="column">Updated {{ note?.updated }}</p>
+        <footer class="columns">
+            <div class="column">
+                <div class="is-flex">
+                    <span class="tag is-link is-light is-clickable" v-for="link in note?.linkedNotes" @click="onLinkClick()">{{ link }}</span>
+                </div>
+                <div class="is-flex">
+                    <p class="column">Created {{ note?.created }}</p>
+                    <p class="column">Updated {{ note?.updated }}</p>
+                </div>
+            </div>
         </footer>
     </div>
 </template>
@@ -81,6 +88,10 @@ const onEditSaveClose = () => {
         store.deleteNote(props.note!.name)
         isEditable.value = true
     }
+}
+
+const onLinkClick = () => {
+    store.openLinks(props.note!)
 }
 </script>
 

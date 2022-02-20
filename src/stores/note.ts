@@ -6,7 +6,8 @@ interface NoteStore {
   notes: NoteMap
   groups: string[],
   searchValue: string,
-  displayed: Note[][]
+  displayed: Note[][],
+  columnSize: number
 }
 
 const getDateTime = (): string => {
@@ -20,6 +21,7 @@ export const useNoteStore = defineStore({
     notes: {},
     groups: [],
     displayed: [],
+    columnSize: 3
   } as NoteStore),
   getters: {
     getNote(state): (name: string) => Note {
@@ -89,9 +91,22 @@ export const useNoteStore = defineStore({
     link(noteMessage: string): string[] {
       return linksFromString(noteMessage, this.notes)
     },
-    splitResults(notes: Note[], splitSize: number = 3) {
+    openLinks(parentNote: Note) {
+      let newDisplayed: Note[][] = []
+      for (let index = 0; index < this.columnSize; index++) {
+        newDisplayed.push([])
+      }
+      for (const key in parentNote.linkedNotes) {
+        const note = this.notes[parentNote.linkedNotes[key]]
+        if (note) {
+          newDisplayed[1].push(note)
+        }
+      }
+      this.displayed = newDisplayed
+    },
+    splitResults(notes: Note[]) {
       let chunks = [], i = 0, n = notes.length
-      let len = notes.length / splitSize
+      let len = notes.length / this.columnSize
       while (i < n) {
           chunks.push(notes.slice(i, i += len))
       }
