@@ -85,13 +85,14 @@ export const useNoteStore = defineStore({
       }
       this.displayed = chunks
     },
-    moveDisplayed(prevListIndex: number, newListIndex: number, name: string) {
+    moveDisplayed(index:number, prevListIndex: number, newListIndex: number, name: string) {
       const item = this.displayed[prevListIndex].find(item => item.name == name)
       if (!item) {
           return
       }
+      console.log(index)
       this.displayed[prevListIndex] = this.displayed[prevListIndex].filter(x => x.name !== name)
-      this.displayed[newListIndex].push(item)
+      this.displayed[newListIndex].splice(index, 0, item)
     }
   }
 })

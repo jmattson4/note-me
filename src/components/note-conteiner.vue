@@ -1,9 +1,9 @@
 <template>
-    <div class="columns">
+    <div class="columns is-gapless">
         <div
             :id="`display-column-${index}`"
             v-for="val, index in store.displayed"
-            class="column is-one-third"
+            class="column"
             :key="index"
             style="min-height: 50px;"
             @drop="onDrop($event, index)"
@@ -12,10 +12,10 @@
         >
             <NoteDisplay
                 :note="note"
-                v-for="note in val"
-                :key="note.name"
+                v-for="note, i in val"
+                :key="i"
                 :list-index="index"
-                :data-id="note.name"
+                :index="i"
             />
         </div>
     </div>
@@ -29,18 +29,49 @@ import { watch } from 'vue';
 const store = useNoteStore()
 
 const onDrop = (event: DragEvent, listIndex: number,) => {
+    console.log((event.target as HTMLElement).tagName)
+
     const name = event.dataTransfer?.getData('name')
-    if (!name){
+    if (!name) {
         return
     }
+    const index = traverseTree((event.target as HTMLElement))
     const prevListIndex = parseInt(event.dataTransfer!.getData('listIndex'))
-    store.moveDisplayed(prevListIndex, listIndex, name!)
+    store.moveDisplayed(index ?? 0, prevListIndex, listIndex, name!)
+}
+
+const traverseTree = (element: HTMLElement, shift = 0): number | null => {
+    if (element) {
+        switch (element.tagName) {
+            case 'DIV':
+                if (element.classList.contains("display")) {
+                    return parseInt(element.getAttribute('data-id')!) + shift
+                } else if(element.classList.contains("level")){
+                    return traverseTree(element.parentElement!, -1)
+                } else {
+                    return traverseTree(element.parentElement!)
+                }
+            case 'HEADER': 
+                return traverseTree(element.parentElement!, -1)
+            case 'FOOTER':     
+            case 'SECTION': 
+                return traverseTree(element.parentElement!, 1)
+            case 'SPAN':
+            case 'BUTTON':
+            case 'P': 
+                return traverseTree(element.parentElement!)
+            default:
+                break;
+        }
+    }
+    return 0
 }
 
 watch(() => store.searchResults, (newVal) => {
-    console.log('fired')
-    store.splitResults(newVal)
-}, {deep: true})
+    if (newVal && newVal.length > 0) {
+        store.splitResults(newVal, 4)
+    }
+}, { deep: true })
 
 </script>
 

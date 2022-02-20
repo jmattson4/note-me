@@ -2,6 +2,7 @@
     <div
         class="display tile box has-background-white-ter"
         draggable="true"
+        :data-id="listIndex"
         @dragstart="dragStart($event, note!)"
     >
         <header class="display-header level">

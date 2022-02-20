@@ -6,9 +6,9 @@ import NoteConteiner from '../components/note-conteiner.vue';
 </script>
 
 <template>
-  <main class="container">
+  <main>
     <div class="down">
-      <div class="level" style="width: 100%;">
+      <div class="level" >
         <CreateNote />
         <Search />
       </div>
