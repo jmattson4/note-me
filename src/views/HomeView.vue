@@ -8,7 +8,7 @@ import NoteConteiner from '../components/note-conteiner.vue';
 <template>
   <main>
     <div class="down">
-      <div class="level" >
+      <div style="display: flex; justify-content: center; column-gap: 1vw;">
         <CreateNote />
         <Search />
       </div>

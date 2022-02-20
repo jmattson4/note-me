@@ -1,41 +1,47 @@
 <template>
-    <Button type="is-primary" @click="modalCloser()">Create Note</Button>
-    <Modal
-        :is-open="isModalOpen"
-        @close="modalCloser()"
-        title="Create Note"
-        @success="submit()"
-        :sucess-disabled="isSubmitting"
-    >
-        <template v-slot:body>
-            <InputField
-                type="input"
-                label="Name"
-                placeholder="Note Name"
-                v-model="name"
-                :valid="!nameError"
-                :invalid-message="nameError"
-            />
-            <!-- <InputField
+    <div>
+        <Button type="is-primary" @click="modalCloser()" style="height: 100%;">Create Note</Button>
+        <Modal
+            :is-open="isModalOpen"
+            @close="modalCloser()"
+            title="Create Note"
+            @success="submit()"
+            :sucess-disabled="isSubmitting"
+        >
+            <template v-slot:body>
+                <InputField
+                    type="input"
+                    label="Name"
+                    placeholder="Note Name"
+                    v-model="name"
+                    :valid="!nameError"
+                    :invalid-message="nameError"
+                />
+                <!-- <InputField
                 type="dropdown"
                 label="Group Name"
                 placeholder="Group Name"
                 v-model="groupName"
                 :valid="true"
                 :drop-down-content
-            /> -->
-            <DropDown label="Group Name" v-model="groupName" :drop-down-content="noteStore.groups" />
-            <InputField
-                type="textbox"
-                label="Message"
-                placeholder="Enter a Note"
-                v-model="message"
-                :valid="!messageError"
-                :invalid-message="messageError"
-            />
-        </template>
-        <template v-slot:success>Create</template>
-    </Modal>
+                />-->
+                <DropDown
+                    label="Group Name"
+                    v-model="groupName"
+                    :drop-down-content="noteStore.groups"
+                />
+                <InputField
+                    type="textbox"
+                    label="Message"
+                    placeholder="Enter a Note"
+                    v-model="message"
+                    :valid="!messageError"
+                    :invalid-message="messageError"
+                />
+            </template>
+            <template v-slot:success>Create</template>
+        </Modal>
+    </div>
 </template>
 
 <script setup lang="ts">

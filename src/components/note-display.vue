@@ -2,7 +2,7 @@
     <div
         class="display tile box has-background-white-ter"
         draggable="true"
-        :data-id="listIndex"
+        :data-id="index"
         @dragstart="dragStart($event, note!)"
     >
         <header class="display-header level">
@@ -43,7 +43,8 @@ import InputField from './input-field.vue';
 import { useNoteStore } from '@/stores/note';
 const props = defineProps({
     note: Object as PropType<Note>,
-    listIndex: Number
+    listIndex: Number,
+    index: Number
 })
 const store = useNoteStore()
 const isEditable = ref(true)

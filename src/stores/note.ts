@@ -1,4 +1,5 @@
 import type { Note, NoteMap } from '@/models/Note'
+import { linksFromString } from '@/service/linker'
 import { defineStore } from 'pinia'
 
 interface NoteStore {
@@ -65,13 +66,16 @@ export const useNoteStore = defineStore({
       note.created = getDateTime()
       note.updated = getDateTime()
       this.addGroup(note.groupName)
+      note.linkedNotes = this.link(note.message)
       this.notes[note.name] = note
     },
     updateNote(note: Note) {
-      const n = this.getNote(note.name)
+      let n = this.getNote(note.name)
       if (n) {
+        n = note;
         n.updated = getDateTime()
-        this.createNote(note)
+        n.linkedNotes = this.link(note.message)
+        this.notes[n.name] = n
       }
     },
     deleteNote(noteName: string) {
@@ -81,6 +85,9 @@ export const useNoteStore = defineStore({
       if (!this.groups.includes(groupName)) {
         this.groups.push(groupName)
       }
+    },
+    link(noteMessage: string): string[] {
+      return linksFromString(noteMessage, this.notes)
     },
     splitResults(notes: Note[], splitSize: number = 3) {
       let chunks = [], i = 0, n = notes.length

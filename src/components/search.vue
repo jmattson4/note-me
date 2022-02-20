@@ -1,6 +1,6 @@
 <template>
     <DropdownSearch
-        style="width: 80%;"
+        style="width: 80%; height: 100%"
         place-holder="Search For Notes"
         v-model="store.searchValue"
         :drop-down-content="store.searchSuggestions"
