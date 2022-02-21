@@ -2,11 +2,18 @@ import type { Note, NoteMap } from '@/models/Note'
 import { linksFromString, replaceLinksForDisplay } from '@/service/linker'
 import { defineStore } from 'pinia'
 
+type Display = Note[][]
+
+interface SavedDisplays {
+  [name: string]: Display
+}
+
 interface NoteStore {
   notes: NoteMap
   groups: string[],
   searchValue: string,
-  displayed: Note[][],
+  displayed: Display,
+  saveDisplayes: SavedDisplays,
   columnSize: number
 }
 
@@ -21,6 +28,7 @@ export const useNoteStore = defineStore({
     notes: {},
     groups: [],
     displayed: [],
+    saveDisplayes: {},
     columnSize: 4
   } as NoteStore),
   getters: {
@@ -61,6 +69,9 @@ export const useNoteStore = defineStore({
         } )
         return results
       }
+    },
+    existingDisplays(state): string[] {
+      return Object.keys(state.saveDisplayes)
     }
   },
   actions: {
@@ -131,6 +142,15 @@ export const useNoteStore = defineStore({
       }
       this.displayed[prevListIndex] = this.displayed[prevListIndex].filter(x => x.name !== name)
       this.displayed[newListIndex].splice(index, 0, item)
+    },
+    saveDisplay(name: string) {
+      this.saveDisplayes[name] = this.displayed
+    },
+    loadDisplay(name: string) {
+      const sd = this.SavedDisplays[name]
+      if (sd) {
+        this.displayed = sd
+      }
     }
   }
 })

@@ -1,10 +1,9 @@
 <template>
     <div>
-        <Button type="is-primary" @click="modalCloser()" style="height: 100%;">Create Note</Button>
         <Modal
-            :is-open="isModalOpen"
-            @close="modalCloser()"
+            :model-value="isModalOpen"
             title="Create Note"
+            @update:model-value="$emit('close')"
             @success="submit()"
             :sucess-disabled="isSubmitting"
         >
@@ -17,14 +16,6 @@
                     :valid="!nameError"
                     :invalid-message="nameError"
                 />
-                <!-- <InputField
-                type="dropdown"
-                label="Group Name"
-                placeholder="Group Name"
-                v-model="groupName"
-                :valid="true"
-                :drop-down-content
-                />-->
                 <DropDown
                     label="Group Name"
                     v-model="groupName"
@@ -45,27 +36,35 @@
 </template>
 
 <script setup lang="ts">
-import Button from '@/components/button.vue';
-import Modal from '../components/modal.vue';
+import Modal from './modal.vue';
 import InputField from './input-field.vue';
 import DropDown from './dropdown-search.vue';
 import { useForm, useField } from 'vee-validate';
 import { noteSchema, type Note } from '@/models/Note'
-import { ref } from 'vue';
+import { onMounted } from 'vue';
 import { useNoteStore } from '@/stores/note';
-import { randomUUID } from 'crypto';
 
 const noteStore = useNoteStore()
 
-const isModalOpen = ref(false)
-
-const modalCloser = () => {
-    isModalOpen.value = !isModalOpen.value
-}
+defineProps({
+    isModalOpen: Boolean
+})
+const emit = defineEmits(['close'])
 
 const { setErrors, handleSubmit, isSubmitting, resetForm } = useForm({
     validationSchema: noteSchema,
 })
+const { value: name, errorMessage: nameError } = useField<string>('name');
+const { value: groupName } = useField<string>('groupName');
+const { value: message, errorMessage: messageError } = useField<string>('message');
+
+const reset = () => {
+    resetForm()
+    setErrors({
+        name: 'Please enter a name',
+        message: 'Please enter a note'
+    })
+}
 
 const submit = handleSubmit((n) => {
     if (noteStore.getNote(n.name ?? '')) {
@@ -83,16 +82,11 @@ const submit = handleSubmit((n) => {
         linkedNotes: []
     }
     noteStore.createNote(note)
-    resetForm()
-    modalCloser()
+    reset()
+    emit('close')
 })
 
-setErrors({
-    name: 'Please enter a name',
-    message: 'Please enter a note'
+onMounted(() => {
+    reset()
 })
-
-const { value: name, errorMessage: nameError } = useField<string>('name');
-const { value: groupName } = useField<string>('groupName');
-const { value: message, errorMessage: messageError } = useField<string>('message');
 </script>
