@@ -1,5 +1,6 @@
 import type { Note, NoteMap } from '@/models/Note'
 import { linksFromString, replaceLinksForDisplay } from '@/service/linker'
+import { remove } from '@vue/shared'
 import { defineStore } from 'pinia'
 
 type Space = Note[][]
@@ -43,16 +44,16 @@ export const useNoteStore = defineStore({
     },
     getNoteMessageDisplay(state): (name: string) => string {
       return function (name: string): string {
-        return replaceLinksForDisplay(state.notes[name].message!)
+        return replaceLinksForDisplay(state.notes[name]?.message ?? '')
       }
     },
     searchSuggestions(state): string[] {
       let results: string[] = []
-      Object.keys(state.notes).forEach(key =>{
+      Object.keys(state.notes).forEach(key => {
         if (key.includes(state.searchValue) || state.notes[key]?.groupName.includes(state.searchValue)) {
           results.push(state.notes[key].name)
         }
-      } )
+      })
       return results
     },
     searchResults(state): Note[] {
@@ -66,16 +67,16 @@ export const useNoteStore = defineStore({
           default:
             break
         }
-        Object.keys(state.notes).forEach(key =>{
+        Object.keys(state.notes).forEach(key => {
           if (key.includes(search) || state.notes[key]?.groupName.includes(search)) {
             results.push(state.notes[key])
           }
-        } )
+        })
         return results
       }
     },
     existingDisplays(state): string[] {
-      return Object.keys(state.spaces).filter( x => x.includes(state.spaceSearchValue))
+      return Object.keys(state.spaces).filter(x => x.includes(state.spaceSearchValue))
     }
   },
   actions: {
@@ -101,6 +102,25 @@ export const useNoteStore = defineStore({
       }
     },
     deleteNote(noteName: string) {
+      //remove note from spaces
+      Object.keys(this.spaces).forEach(x => {
+        this.spaces[x].forEach((y, i) => {
+          const index = y.findIndex(z => z.name === noteName)
+          if (index !== -1) {
+            if (this.spaces[x][i]) {
+              this.spaces[x][i].splice(index, 1)
+            }
+          }
+        })
+      })
+      //remove from currently displayed.
+      this.displayed.forEach((_, i) => {
+        const index = this.displayed[i].findIndex(z => z.name === noteName)
+        if (index !== -1) {
+          this.displayed[i].splice(index, 1)
+        }
+      })
+      //remove from notes.
       delete this.notes[noteName]
     },
     addGroup(groupName: string) {
@@ -135,25 +155,25 @@ export const useNoteStore = defineStore({
       let chunks = [], i = 0, n = notes.length
       let len = notes.length / this.columnSize
       while (i < n) {
-          chunks.push(notes.slice(i, i += len))
+        chunks.push(notes.slice(i, i += len))
       }
       this.displayed = chunks
     },
-    moveDisplayed(index:number, prevListIndex: number, newListIndex: number, name: string) {
+    moveDisplayed(index: number, prevListIndex: number, newListIndex: number, name: string) {
       const item = this.displayed[prevListIndex].find(item => item.name == name)
       if (!item) {
-          return
+        return
       }
       this.displayed[prevListIndex] = this.displayed[prevListIndex].filter(x => x.name !== name)
       this.displayed[newListIndex].splice(index, 0, item)
     },
     saveDisplay(name: string) {
-      this.saveDisplayes[name] = this.displayed
+      this.spaces[name] = this.displayed
     },
     loadDisplay() {
-      const sd = this.saveDisplayes[this.displaySearchValue]
+      const sd = this.spaces[this.spaceSearchValue]
       if (sd) {
-        this.selectedDisplay = this.displaySearchValue;
+        this.selectedSpace = this.spaceSearchValue;
         this.displayed = sd
       }
     }

@@ -64,11 +64,11 @@ const traverseTree = (element: HTMLElement, shift = 0): number => {
     return 0
 }
 
-watch(() => store.searchResults, (newVal) => {
-    if (newVal && newVal.length > 0) {
-        store.splitResults(newVal)
-    }
-}, { deep: true })
+// watch(() => store.searchResults, (newVal) => {
+//     if (newVal && newVal.length > 0) {
+//         store.splitResults(newVal)
+//     }
+// }, { deep: true })
 
 </script>
 
