@@ -1,7 +1,7 @@
 <template>
     <Modal
         :model-value="isModalOpen"
-        title="Create Note"
+        title="Save Display"
         @update:model-value="$emit('close')"
         @success="submit()"
         :sucess-disabled="isSubmitting"
@@ -34,26 +34,22 @@ defineProps({
 })
 const emit = defineEmits(['close'])
 
-const { setErrors, handleSubmit, isSubmitting, resetForm } = useForm({
+const { handleSubmit, isSubmitting, resetForm, setValues } = useForm({
     validationSchema: object({
         displayName: string().required('Please enter a display name.')
     }),
+    initialValues: {
+        displayName: noteStore.selectedDisplay
+    }
 })
 const { value: displayName, errorMessage: nameError } = useField<string>('displayName');
 
 const reset = () => {
-    resetForm()
-    setErrors({
-        displayName: 'Please enter a name',
+    setValues({
+        displayName: noteStore.selectedDisplay
     })
 }
 const submit = handleSubmit((f) => {
-    if (f.displayName && noteStore.existingDisplays && noteStore.existingDisplays.includes(f.displayName)) {
-        setErrors({
-            displayName: 'Display name already exists.'
-        })
-        return
-    }
     noteStore.saveDisplay(f.displayName!)
     emit('close')
     reset()

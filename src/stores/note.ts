@@ -14,6 +14,8 @@ interface NoteStore {
   searchValue: string,
   displayed: Display,
   saveDisplayes: SavedDisplays,
+  selectedDisplay: string,
+  displaySearchValue: string,
   columnSize: number
 }
 
@@ -29,6 +31,8 @@ export const useNoteStore = defineStore({
     groups: [],
     displayed: [],
     saveDisplayes: {},
+    selectedDisplay: '',
+    displaySearchValue: '',
     columnSize: 4
   } as NoteStore),
   getters: {
@@ -71,7 +75,7 @@ export const useNoteStore = defineStore({
       }
     },
     existingDisplays(state): string[] {
-      return Object.keys(state.saveDisplayes)
+      return Object.keys(state.saveDisplayes).filter( x => x.includes(state.displaySearchValue))
     }
   },
   actions: {
@@ -146,9 +150,10 @@ export const useNoteStore = defineStore({
     saveDisplay(name: string) {
       this.saveDisplayes[name] = this.displayed
     },
-    loadDisplay(name: string) {
-      const sd = this.SavedDisplays[name]
+    loadDisplay() {
+      const sd = this.saveDisplayes[this.displaySearchValue]
       if (sd) {
+        this.selectedDisplay = this.displaySearchValue;
         this.displayed = sd
       }
     }

@@ -10,10 +10,15 @@
                     class="dropdown-item has-background-black"
                     @click="isSaveDisplayOpen = true"
                 >Save Display</a>
+                <a
+                    class="dropdown-item has-background-black"
+                    @click="isLoadDisplayOpen = true"
+                >Load Display</a>
             </template>
         </DropdownButton>
-        <CreateNoteModal :is-modal-open="isCreateNoteOpen" @close="isCreateNoteOpen = false"/>
-        <SaveDisplayModal :is-modal-open="isSaveDisplayOpen" @close="isSaveDisplayOpen = false"/>
+        <CreateNoteModal :is-modal-open="isCreateNoteOpen" @close="isCreateNoteOpen = false" />
+        <SaveDisplayModal :is-modal-open="isSaveDisplayOpen" @close="isSaveDisplayOpen = false" />
+        <LoadDisplayModal :is-modal-open="isLoadDisplayOpen" @close="isLoadDisplayOpen = false" />
     </div>
 </template>
 
@@ -22,7 +27,9 @@ import { ref } from 'vue';
 import DropdownButton from './dropdown-button.vue';
 import CreateNoteModal from './create-note-modal.vue';
 import SaveDisplayModal from './save-display-modal.vue';
+import LoadDisplayModal from './load-display-modal.vue';
 
 const isCreateNoteOpen = ref(false)
 const isSaveDisplayOpen = ref(false);
+const isLoadDisplayOpen = ref(false);
 </script>
