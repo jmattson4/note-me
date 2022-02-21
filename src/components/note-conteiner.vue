@@ -27,7 +27,6 @@ import NoteDisplay from './note-display.vue';
 import { watch } from 'vue';
 
 const store = useNoteStore()
-store.columnSize = 4
 const onDrop = (event: DragEvent, listIndex: number,) => {
     const name = event.dataTransfer?.getData('name')
     if (!name) {

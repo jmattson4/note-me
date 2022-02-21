@@ -1,5 +1,5 @@
 import type { Note, NoteMap } from '@/models/Note'
-import { linksFromString } from '@/service/linker'
+import { linksFromString, replaceLinksForDisplay } from '@/service/linker'
 import { defineStore } from 'pinia'
 
 interface NoteStore {
@@ -21,12 +21,17 @@ export const useNoteStore = defineStore({
     notes: {},
     groups: [],
     displayed: [],
-    columnSize: 3
+    columnSize: 4
   } as NoteStore),
   getters: {
     getNote(state): (name: string) => Note {
       return function (name: string): Note {
         return state.notes[name]
+      }
+    },
+    getNoteMessageDisplay(state): (name: string) => string {
+      return function (name: string): string {
+        return replaceLinksForDisplay(state.notes[name].message!)
       }
     },
     searchSuggestions(state): string[] {
@@ -96,10 +101,17 @@ export const useNoteStore = defineStore({
       for (let index = 0; index < this.columnSize; index++) {
         newDisplayed.push([])
       }
+      newDisplayed[0].push(parentNote)
+      let columnPut = 1
       for (const key in parentNote.linkedNotes) {
         const note = this.notes[parentNote.linkedNotes[key]]
         if (note) {
-          newDisplayed[1].push(note)
+          newDisplayed[columnPut].push(note)
+          if (columnPut == this.columnSize - 1) {
+            columnPut = 1
+          } else {
+            columnPut++
+          }
         }
       }
       this.displayed = newDisplayed

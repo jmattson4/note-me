@@ -1,7 +1,7 @@
 <template>
     <div
         class="display tile box has-background-white-ter"
-        draggable="true"
+        :draggable="!isEditable ? 'false' : 'true'"
         :data-id="index"
         @dragstart="dragStart($event, note!)"
     >
@@ -23,20 +23,22 @@
         </header>
         <section class="display-body">
             <InputField
+                v-if="!isEditable"
                 type="textbox"
                 v-model="note!.message"
                 :valid="true"
                 :disabled="isEditable"
             />
+            <pre v-else>{{store.getNoteMessageDisplay(note!.name)}}</pre>
         </section>
         <footer class="columns">
             <div class="column">
-                <div class="is-flex">
-                    <span class="tag is-link is-light is-clickable" v-for="link in note?.linkedNotes" @click="onLinkClick()">{{ link }}</span>
+                <div class="is-flex is-flex-wrap-wrap">
+                    <span class="tag is-link is-light is-clickable m-1" v-for="link in note?.linkedNotes" @click="onLinkClick()">{{ link }}</span>
                 </div>
                 <div class="is-flex">
-                    <p class="column">Created {{ note?.created }}</p>
-                    <p class="column">Updated {{ note?.updated }}</p>
+                    <p class="column is-size-7">Created: {{ note?.created }}</p>
+                    <p class="column is-size-7">Updated: {{ note?.updated }}</p>
                 </div>
             </div>
         </footer>
