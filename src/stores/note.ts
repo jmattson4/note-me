@@ -91,6 +91,7 @@ export const useNoteStore = defineStore({
       this.addGroup(note.groupName)
       note.linkedNotes = this.link(note.message)
       this.notes[note.name] = note
+      this.displayed[0].splice(0, 0, note)
     },
     updateNote(note: Note) {
       let n = this.getNote(note.name)

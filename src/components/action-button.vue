@@ -9,11 +9,11 @@
                 <a
                     class="dropdown-item has-background-black"
                     @click="isSaveDisplayOpen = true"
-                >Save Display</a>
+                >Save Space</a>
                 <a
                     class="dropdown-item has-background-black"
                     @click="isLoadDisplayOpen = true"
-                >Load Display</a>
+                >Load Space</a>
             </template>
         </DropdownButton>
         <CreateNoteModal :is-modal-open="isCreateNoteOpen" @close="isCreateNoteOpen = false" />
