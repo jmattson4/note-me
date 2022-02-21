@@ -2,20 +2,20 @@ import type { Note, NoteMap } from '@/models/Note'
 import { linksFromString, replaceLinksForDisplay } from '@/service/linker'
 import { defineStore } from 'pinia'
 
-type Display = Note[][]
+type Space = Note[][]
 
-interface SavedDisplays {
-  [name: string]: Display
+interface Spaces {
+  [name: string]: Space
 }
 
 interface NoteStore {
   notes: NoteMap
   groups: string[],
   searchValue: string,
-  displayed: Display,
-  saveDisplayes: SavedDisplays,
-  selectedDisplay: string,
-  displaySearchValue: string,
+  displayed: Space,
+  spaces: Spaces,
+  selectedSpace: string,
+  spaceSearchValue: string,
   columnSize: number
 }
 
@@ -30,9 +30,9 @@ export const useNoteStore = defineStore({
     notes: {},
     groups: [],
     displayed: [],
-    saveDisplayes: {},
-    selectedDisplay: '',
-    displaySearchValue: '',
+    spaces: {},
+    selectedSpace: '',
+    spaceSearchValue: '',
     columnSize: 4
   } as NoteStore),
   getters: {
@@ -75,7 +75,7 @@ export const useNoteStore = defineStore({
       }
     },
     existingDisplays(state): string[] {
-      return Object.keys(state.saveDisplayes).filter( x => x.includes(state.displaySearchValue))
+      return Object.keys(state.spaces).filter( x => x.includes(state.spaceSearchValue))
     }
   },
   actions: {

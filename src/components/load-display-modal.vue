@@ -1,18 +1,18 @@
 <template>
     <Modal
         :model-value="isModalOpen"
-        title="Load Display"
+        title="Load Space"
         @update:model-value="$emit('close')"
         @success="submit()"
     >
         <template v-slot:body>
             <DropdownSearch
                 type="input"
-                label="Display Name"
+                label="Space Name"
                 class="mb-5"
-                placeholder="Display Name"
-                v-model="noteStore.displaySearchValue"
-                :valid="noteStore.displaySearchValue"
+                placeholder="Space Name"
+                v-model="noteStore.spaceSearchValue"
+                :valid="noteStore.spaceSearchValue"
                 :drop-down-content="noteStore.existingDisplays"
             />
         </template>
@@ -37,7 +37,7 @@ const submit = () => {
 }
 watch(() => props.isModalOpen, (nv) => {
     if (nv) {
-        noteStore.displaySearchValue = ''
+        noteStore.spaceSearchValue = ''
     }
 })
 </script>

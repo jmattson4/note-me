@@ -1,7 +1,7 @@
 <template>
     <Modal
         :model-value="isModalOpen"
-        title="Save Display"
+        title="Save Space"
         @update:model-value="$emit('close')"
         @success="submit()"
         :sucess-disabled="isSubmitting"
@@ -9,9 +9,9 @@
         <template v-slot:body>
             <InputField
                 type="input"
-                label="Display Name"
-                placeholder="Display Name"
-                v-model="displayName"
+                label="Space Name"
+                placeholder="Space Name"
+                v-model="spaceName"
                 :valid="!nameError"
                 :invalid-message="nameError"
             />
@@ -34,23 +34,23 @@ defineProps({
 })
 const emit = defineEmits(['close'])
 
-const { handleSubmit, isSubmitting, resetForm, setValues } = useForm({
+const { handleSubmit, isSubmitting, setValues } = useForm({
     validationSchema: object({
-        displayName: string().required('Please enter a display name.')
+        spaceName: string().required('Please enter a space name.')
     }),
     initialValues: {
-        displayName: noteStore.selectedDisplay
+        spaceName: noteStore.selectedSpace
     }
 })
-const { value: displayName, errorMessage: nameError } = useField<string>('displayName');
+const { value: spaceName, errorMessage: nameError } = useField<string>('spaceName');
 
 const reset = () => {
     setValues({
-        displayName: noteStore.selectedDisplay
+        spaceName: noteStore.selectedSpace
     })
 }
 const submit = handleSubmit((f) => {
-    noteStore.saveDisplay(f.displayName!)
+    noteStore.saveDisplay(f.spaceName!)
     emit('close')
     reset()
 })

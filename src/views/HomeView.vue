@@ -2,7 +2,7 @@
 
 import CreateNote from '../components/action-button.vue';
 import Search from '../components/search.vue';
-import NoteConteiner from '../components/note-conteiner.vue';
+import NoteContainer from '../components/note-container.vue';
 </script>
 
 <template>
@@ -12,7 +12,7 @@ import NoteConteiner from '../components/note-conteiner.vue';
         <CreateNote />
         <Search />
       </div>
-      <NoteConteiner/>
+      <NoteContainer/>
     </div>
   </main>
 </template>
