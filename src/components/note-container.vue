@@ -11,7 +11,7 @@
             @dragover.prevent
         >
             <NoteDisplay
-                :note="note"
+                :note="store.getNote(note)"
                 v-for="note, i in val"
                 :key="i"
                 :list-index="index"
@@ -24,7 +24,6 @@
 <script setup lang="ts">
 import { useNoteStore } from '@/stores/note';
 import NoteDisplay from './note-display.vue';
-import { watch } from 'vue';
 
 const store = useNoteStore()
 const onDrop = (event: DragEvent, listIndex: number,) => {

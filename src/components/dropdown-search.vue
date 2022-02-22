@@ -1,7 +1,7 @@
 <template>
-    <div class="field">
+    <div class="field is-flex">
         <label class="label">{{ label }}</label>
-        <div class="control">
+        <div class="control" style="width:100%">
             <div class="dropdown" style="width: 100%;" :class="isActive ? 'is-active' : ''">
                 <div class="dropdown-trigger" style="width: 100%;">
                     <input

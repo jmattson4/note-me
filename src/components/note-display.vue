@@ -30,7 +30,7 @@
                 :valid="true"
                 :disabled="isEditable"
             />
-            <pre v-else>{{store.getNoteMessageDisplay(note!.name)}}</pre>
+            <pre v-else>{{store.getNoteMessageDisplay(note?.name ?? '')}}</pre>
         </section>
         <footer class="columns">
             <div class="column">
@@ -98,7 +98,6 @@ const onLinkClick = () => {
 }
 
 const onKeyup = (keyUp: KeyboardEvent) => {
-    console.log(keyUp)
     if (keyUp.code === 'ControlLeft'){
         onEditSaveClick()
     }

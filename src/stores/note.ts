@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import type { Note, NoteMap } from '@/models/Note'
 import { linksFromString, replaceLinksForDisplay } from '@/service/linker'
 
-type Space = Note[][]
+type Space = string[][]
 
 interface Spaces {
   [name: string]: Space
@@ -79,6 +79,11 @@ export const useNoteStore = defineStore({
     }
   },
   actions: {
+    initDisplayed() {
+      for (let index = 0; index < this.columnSize; index++) {
+        this.displayed.push([])
+      }
+    },
     updateSearchValue(search: string) {
       if (search) {
         this.searchValue = search
@@ -90,7 +95,10 @@ export const useNoteStore = defineStore({
       this.addGroup(note.groupName)
       note.linkedNotes = this.link(note.message)
       this.notes[note.name] = note
-      this.displayed[0].splice(0, 0, note)
+      if (this.displayed && this.displayed.length <= 0) {
+        this.initDisplayed()
+      }
+      this.displayed[0].splice(0, 0, note.name)
     },
     updateNote(note: Note) {
       let n = this.getNote(note.name)
@@ -105,7 +113,7 @@ export const useNoteStore = defineStore({
       //remove note from spaces
       Object.keys(this.spaces).forEach(x => {
         this.spaces[x].forEach((y, i) => {
-          const index = y.findIndex(z => z.name === noteName)
+          const index = y.findIndex(z => z === noteName)
           if (index !== -1) {
             if (this.spaces[x][i]) {
               this.spaces[x][i].splice(index, 1)
@@ -115,7 +123,7 @@ export const useNoteStore = defineStore({
       })
       //remove from currently displayed.
       this.displayed.forEach((_, i) => {
-        const index = this.displayed[i].findIndex(z => z.name === noteName)
+        const index = this.displayed[i].findIndex(z => z === noteName)
         if (index !== -1) {
           this.displayed[i].splice(index, 1)
         }
@@ -160,11 +168,11 @@ export const useNoteStore = defineStore({
       this.displayed = chunks
     },
     moveDisplayed(index: number, prevListIndex: number, newListIndex: number, name: string) {
-      const item = this.displayed[prevListIndex].find(item => item.name == name)
+      const item = this.displayed[prevListIndex].find(item => item == name)
       if (!item) {
         return
       }
-      this.displayed[prevListIndex] = this.displayed[prevListIndex].filter(x => x.name !== name)
+      this.displayed[prevListIndex] = this.displayed[prevListIndex].filter(x => x !== name)
       this.displayed[newListIndex].splice(index, 0, item)
     },
     saveDisplay(name: string) {
