@@ -1,7 +1,6 @@
+import { defineStore } from 'pinia'
 import type { Note, NoteMap } from '@/models/Note'
 import { linksFromString, replaceLinksForDisplay } from '@/service/linker'
-import { remove } from '@vue/shared'
-import { defineStore } from 'pinia'
 
 type Space = Note[][]
 

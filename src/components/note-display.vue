@@ -26,6 +26,7 @@
                 v-if="!isEditable"
                 type="textbox"
                 v-model="note!.message"
+                @keyup="onKeyup"
                 :valid="true"
                 :disabled="isEditable"
             />
@@ -94,6 +95,13 @@ const onEditSaveClose = () => {
 
 const onLinkClick = () => {
     store.openLinks(props.note!)
+}
+
+const onKeyup = (keyUp: KeyboardEvent) => {
+    console.log(keyUp)
+    if (keyUp.code === 'ControlLeft'){
+        onEditSaveClick()
+    }
 }
 </script>
 
