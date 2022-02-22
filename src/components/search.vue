@@ -1,10 +1,11 @@
 <template>
     <DropdownSearch
-        style="width: 80%; height: 100%"
+        style="width: 100%; height: 100%;"
         place-holder="Search For Notes"
         v-model="store.searchValue"
         :drop-down-content="store.searchSuggestions"
         @keydown="handleKeyup"
+        @update:modelValue="store.splitResults(store.searchResults!)"
     ></DropdownSearch>
 </template>
 
@@ -14,10 +15,8 @@ import DropdownSearch from "./dropdown-search.vue";
 const store = useNoteStore()
 
 const handleKeyup = (event: KeyboardEvent) => {
-    console.log(event.key)
     if (event.key === 'Enter') {
-        console.log('fired');
-        store.splitResults(store.searchResults)
+        store.splitResults(store.searchResults!)
     }
 }
 

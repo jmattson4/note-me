@@ -7,7 +7,7 @@
     >
         <template v-slot:body>
             <DropdownSearch
-                type="input"
+                type="input"        
                 label="Space Name"
                 class="mb-5"
                 placeholder="Space Name"

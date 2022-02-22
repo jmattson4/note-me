@@ -31,6 +31,7 @@ export const useNoteStore = defineStore({
     groups: [],
     displayed: [],
     spaces: {},
+    searchValue: '',
     selectedSpace: '',
     spaceSearchValue: '',
     columnSize: 4
@@ -38,6 +39,7 @@ export const useNoteStore = defineStore({
   getters: {
     getNote(state): (name: string) => Note {
       return function (name: string): Note {
+        console.log(name)
         return state.notes[name]
       }
     },
@@ -55,9 +57,9 @@ export const useNoteStore = defineStore({
       })
       return results
     },
-    searchResults(state): Note[] {
+    searchResults(state): string[] | undefined {
       if (state.searchValue) {
-        let results: Note[] = []
+        let results: string[] = []
         let search = state.searchValue
         switch (search) {
           case "all":
@@ -68,7 +70,7 @@ export const useNoteStore = defineStore({
         }
         Object.keys(state.notes).forEach(key => {
           if (key.includes(search) || state.notes[key]?.groupName.includes(search)) {
-            results.push(state.notes[key])
+            results.push(state.notes[key].name)
           }
         })
         return results
@@ -140,16 +142,16 @@ export const useNoteStore = defineStore({
       return linksFromString(noteMessage, this.notes)
     },
     openLinks(parentNote: Note) {
-      let newDisplayed: Note[][] = []
+      let newDisplayed: string[][] = []
       for (let index = 0; index < this.columnSize; index++) {
         newDisplayed.push([])
       }
-      newDisplayed[0].push(parentNote)
+      newDisplayed[0].push(parentNote.name)
       let columnPut = 1
       for (const key in parentNote.linkedNotes) {
         const note = this.notes[parentNote.linkedNotes[key]]
         if (note) {
-          newDisplayed[columnPut].push(note)
+          newDisplayed[columnPut].push(note.name)
           if (columnPut == this.columnSize - 1) {
             columnPut = 1
           } else {
@@ -159,7 +161,7 @@ export const useNoteStore = defineStore({
       }
       this.displayed = newDisplayed
     },
-    splitResults(notes: Note[]) {
+    splitResults(notes: string[]) {
       let chunks = [], i = 0, n = notes.length
       let len = notes.length / this.columnSize
       while (i < n) {

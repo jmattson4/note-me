@@ -1,6 +1,6 @@
 <template>
     <div>
-        <DropdownButton label="Action" style="height: 100%;">
+        <DropdownButton label="Action" style="height: 100%;" direction="up">
             <template v-slot:dropdown-content>
                 <a
                     class="dropdown-item has-background-black"
